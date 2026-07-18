@@ -2,7 +2,7 @@
 
 Daily automated tracker for APM / new-grad PM / rotational PM postings across ~50 target
 companies, scoped to **2027-start programs**. Runs as a Claude Code cloud routine every
-morning at ~8 AM ET, diffs fresh results against known state, and emails a digest of
+morning at ~8 AM ET & 7 PM ET, diffs fresh results against known state, and emails a digest of
 **newly opened** postings plus upcoming historical application windows.
 
 ## How it works
