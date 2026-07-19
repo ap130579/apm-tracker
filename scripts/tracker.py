@@ -458,6 +458,8 @@ def cmd_scan(args):
         "other_apm_programs": agg_other[:15],
         "new_postings": new_postings,
         "seen_open": sorted(f"{k[0]}||{k[1]}" for k in seen_keys),
+        # Only surface custom-ATS companies when their window is actually near — listing all 15
+        # year-round reads as a coverage hole when most are watched by the community feed.
         "manual_check": [
             {
                 "company": c["name"],
@@ -465,9 +467,19 @@ def cmd_scan(args):
                 "careers_url": c["careers_url"],
                 "window": f"{c.get('window_start', '?')} to {c.get('window_end', '?')}",
                 "note": c.get("window_note", ""),
+                "coverage": c["ats"].get("feed_coverage", "feed-listed"),
+                "in_feed": c["name"] in agg_by_company,
             }
             for c in custom
+            if c["name"] in {w["company"] for w in [
+                {"company": x[0]["name"]} for x in soon + open_now]}
         ],
+        "coverage_summary": {
+            "api": len(structured),
+            "feed_proven": [c["name"] for c in custom if c["ats"].get("feed_coverage") == "feed-proven"],
+            "feed_listed": [c["name"] for c in custom if c["ats"].get("feed_coverage") == "feed-listed"],
+            "no_coverage": [c["name"] for c in custom if c["ats"].get("feed_coverage") == "none"],
+        },
         "windows_opening_soon": [
             {"company": c["name"], "opens_around": s.isoformat(), "ends_around": e.isoformat(), "note": c.get("window_note", "")}
             for c, s, e in soon
@@ -495,7 +507,8 @@ def cmd_scan(args):
             "aggregator_error": agg_error,
             "new_postings": new_postings,
             "other_apm_programs": pending["other_apm_programs"],
-            "manual_check_needed": [m["company"] for m in pending["manual_check"]],
+            "manual_check_needed": [f"{m['company']} (coverage: {m['coverage']})" for m in pending["manual_check"]],
+            "coverage_summary": pending["coverage_summary"],
             "windows_opening_soon": pending["windows_opening_soon"],
             "windows_open_now": [w["company"] for w in pending["windows_open_now"]],
         },
@@ -664,6 +677,16 @@ def cmd_finalize(args):
             lines.append(f"- {c}: {e}")
         lines.append("")
 
+    manual = pending.get("manual_check", [])
+    if manual:
+        lines.append("## Manual check — these companies' windows are active and they have no API")
+        for m in manual:
+            label = {"none": "NO automated coverage — check this yourself",
+                     "feed-listed": "in community feed, but no PM role has ever come through it",
+                     "feed-proven": "community feed has caught its PM roles before"}.get(m["coverage"], m["coverage"])
+            lines.append(f"- **{m['company']}** — {m['program']} — {label} — {m['careers_url']}")
+        lines.append("")
+
     # Health footer — lets a degrading system be spotted before it silently misses a window.
     n_api_ok = len(pending["checked_companies"])
     n_api_err = len(pending.get("fetch_errors", {}))
@@ -678,6 +701,15 @@ def cmd_finalize(args):
         + " · community feed "
         + (f"OK, covering {agg_n} target companies" if agg_ok else "FAILED"),
     ]
+    cs = pending.get("coverage_summary", {})
+    if cs:
+        lines.append(
+            f"  Coverage: {cs.get('api', 0)} companies via direct API"
+            f" · {len(cs.get('feed_proven', []))} via community feed (proven)"
+            f" · {len(cs.get('feed_listed', []))} feed-listed but PM-unproven"
+            f" · {len(cs.get('no_coverage', []))} need manual checks in-window ("
+            + ", ".join(cs.get("no_coverage", [])) + ")"
+        )
     if not pending.get("state_healthy", True):
         lines.append(f"  ⚠️ STATE NOT PERSISTING — showing roles posted in the last {RECENT_DAYS} days instead of a true diff. Fix the routine's git push to restore exact tracking.")
     if not agg_ok:
