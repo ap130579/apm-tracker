@@ -671,6 +671,422 @@
         "type": "greenhouse",
         "board": "amplitude"
       }
+    },
+    {
+      "name": "Appian",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Product Manager (2027 Graduates)",
+      "careers_url": "https://job-boards.greenhouse.io/appian",
+      "ats": {
+        "type": "greenhouse",
+        "board": "appian"
+      }
+    },
+    {
+      "name": "Coinbase",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/coinbase",
+      "ats": {
+        "type": "greenhouse",
+        "board": "coinbase"
+      }
+    },
+    {
+      "name": "Affirm",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/affirm",
+      "ats": {
+        "type": "greenhouse",
+        "board": "affirm"
+      }
+    },
+    {
+      "name": "Ramp",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://jobs.ashbyhq.com/ramp",
+      "ats": {
+        "type": "ashby",
+        "board": "ramp"
+      }
+    },
+    {
+      "name": "Scale AI",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/scaleai",
+      "ats": {
+        "type": "greenhouse",
+        "board": "scaleai"
+      }
+    },
+    {
+      "name": "Samsara",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/samsara",
+      "ats": {
+        "type": "greenhouse",
+        "board": "samsara"
+      }
+    },
+    {
+      "name": "Gusto",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/gusto",
+      "ats": {
+        "type": "greenhouse",
+        "board": "gusto"
+      }
+    },
+    {
+      "name": "Asana",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/asana",
+      "ats": {
+        "type": "greenhouse",
+        "board": "asana"
+      }
+    },
+    {
+      "name": "Duolingo",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/duolingo",
+      "ats": {
+        "type": "greenhouse",
+        "board": "duolingo"
+      }
+    },
+    {
+      "name": "Reddit",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/reddit",
+      "ats": {
+        "type": "greenhouse",
+        "board": "reddit"
+      }
+    },
+    {
+      "name": "Pinterest",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/pinterest",
+      "ats": {
+        "type": "greenhouse",
+        "board": "pinterest"
+      }
+    },
+    {
+      "name": "SoFi",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/sofi",
+      "ats": {
+        "type": "greenhouse",
+        "board": "sofi"
+      }
+    },
+    {
+      "name": "Flexport",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/flexport",
+      "ats": {
+        "type": "greenhouse",
+        "board": "flexport"
+      }
+    },
+    {
+      "name": "Benchling",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://jobs.ashbyhq.com/benchling",
+      "ats": {
+        "type": "ashby",
+        "board": "benchling"
+      }
+    },
+    {
+      "name": "Faire",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/faire",
+      "ats": {
+        "type": "greenhouse",
+        "board": "faire"
+      }
+    },
+    {
+      "name": "Toast",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/toast",
+      "ats": {
+        "type": "greenhouse",
+        "board": "toast"
+      }
+    },
+    {
+      "name": "Klaviyo",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/klaviyo",
+      "ats": {
+        "type": "greenhouse",
+        "board": "klaviyo"
+      }
+    },
+    {
+      "name": "Confluent",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://jobs.ashbyhq.com/confluent",
+      "ats": {
+        "type": "ashby",
+        "board": "confluent"
+      }
+    },
+    {
+      "name": "MongoDB",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/mongodb",
+      "ats": {
+        "type": "greenhouse",
+        "board": "mongodb"
+      }
+    },
+    {
+      "name": "Elastic",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/elastic",
+      "ats": {
+        "type": "greenhouse",
+        "board": "elastic"
+      }
+    },
+    {
+      "name": "Cloudflare",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/cloudflare",
+      "ats": {
+        "type": "greenhouse",
+        "board": "cloudflare"
+      }
+    },
+    {
+      "name": "Okta",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/okta",
+      "ats": {
+        "type": "greenhouse",
+        "board": "okta"
+      }
+    },
+    {
+      "name": "GitLab",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/gitlab",
+      "ats": {
+        "type": "greenhouse",
+        "board": "gitlab"
+      }
+    },
+    {
+      "name": "Airtable",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/airtable",
+      "ats": {
+        "type": "greenhouse",
+        "board": "airtable"
+      }
+    },
+    {
+      "name": "Vercel",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/vercel",
+      "ats": {
+        "type": "greenhouse",
+        "board": "vercel"
+      }
+    },
+    {
+      "name": "Verkada",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/verkada",
+      "ats": {
+        "type": "greenhouse",
+        "board": "verkada"
+      }
+    },
+    {
+      "name": "Waymo",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/waymo",
+      "ats": {
+        "type": "greenhouse",
+        "board": "waymo"
+      }
+    },
+    {
+      "name": "Nuro",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/nuro",
+      "ats": {
+        "type": "greenhouse",
+        "board": "nuro"
+      }
+    },
+    {
+      "name": "Snowflake",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://jobs.ashbyhq.com/snowflake",
+      "ats": {
+        "type": "ashby",
+        "board": "snowflake"
+      }
+    },
+    {
+      "name": "Block",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/block",
+      "ats": {
+        "type": "greenhouse",
+        "board": "block"
+      }
+    },
+    {
+      "name": "Marqeta",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://job-boards.greenhouse.io/marqeta",
+      "ats": {
+        "type": "greenhouse",
+        "board": "marqeta"
+      }
+    },
+    {
+      "name": "Miro",
+      "program": "Product Manager / APM (new grad)",
+      "group": "Expanded coverage",
+      "window_start": "08-01",
+      "window_end": "10-31",
+      "window_note": "Added 2026-07-24 to widen coverage beyond the original target list",
+      "careers_url": "https://jobs.ashbyhq.com/miro",
+      "ats": {
+        "type": "ashby",
+        "board": "miro"
+      }
     }
   ]
 }

@@ -286,7 +286,10 @@ def fetch_aggregator(companies):
         target = lookup.get(_norm_company(j.get("company_name")))
         if target:
             by_company.setdefault(target, []).append(entry)
-        elif tier == "apm" and re.search(r"associate product manager|\bapm\b|rotational product", title, re.I):
+        elif tier == "apm":
+            # Any tier-1 title at a non-target company. INCLUDE_RE already demands a new-grad
+            # signal, so this stays quiet — and it catches odd phrasings like
+            # "Product Manager (2027 Graduates)" that a narrower regex would drop.
             other.append({**entry, "company": j.get("company_name", "?")})
     return by_company, other
 
