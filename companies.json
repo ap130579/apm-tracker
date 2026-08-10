@@ -2,6 +2,27 @@
   "comment": "Target companies for the 2027-grad APM tracker. ats.type drives scripts/tracker.py; type 'custom' companies are checked by the routine via targeted web search. window_* are historical open-date priors (MM-DD, 2025 cycle) \u2014 priors only, always verify live. ats.feed_coverage (custom-ATS only): feed-proven = the community feed has historically carried this company's PM roles; feed-listed = company appears in the feed but no PM role has come through it; none = no automated coverage, needs a manual check during its window.",
   "companies": [
     {
+      "name": "TikTok",
+      "program": "Product Manager Graduate / AI Product Manager Graduate (2027 Start)",
+      "group": "Urgent \u2014 capped applications",
+      "window_start": "08-01",
+      "window_end": "11-30",
+      "window_note": "Early Career applications capped at 2 per period (resets Jan 1 / Jul 1); reviewed rolling in submission order \u2014 treat as same-day urgent.",
+      "careers_url": "https://lifeattiktok.com/search?keyword=product%20manager%20graduate",
+      "urgent": true,
+      "ats": {
+        "type": "themuse",
+        "company": "TikTok",
+        "pages": 60,
+        "queries": [
+          "product manager graduate 2027",
+          "ai product manager graduate 2027",
+          "product manager graduate"
+        ],
+        "direct_sites_note": "careers.tiktok.com and lifeattiktok.com are fully client-rendered and their internal search API returns an empty body to unauthenticated callers \u2014 not scrapeable from the sandbox. The Muse is the structured stand-in; the SimplifyJobs feed provides a second, independent path via fetch_aggregator."
+      }
+    },
+    {
       "name": "Instacart",
       "program": "Associate Product Manager (APM)",
       "group": "Marketplace",
