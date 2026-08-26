@@ -598,10 +598,13 @@
       "group": "Fintech",
       "window_start": "08-15",
       "window_end": "08-31",
-      "careers_url": "https://corporate.visa.com/en/jobs.html",
+      "careers_url": "https://visa.wd5.myworkdayjobs.com/Visa",
       "ats": {
-        "type": "smartrecruiters",
-        "company": "Visa"
+        "type": "workday",
+        "tenant": "visa",
+        "host": "wd5",
+        "site": "Visa",
+        "search": "associate product manager"
       }
     },
     {

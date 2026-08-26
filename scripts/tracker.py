@@ -236,12 +236,17 @@ def fetch_workday(cfg):
     tenant, host, site = cfg["tenant"], cfg["host"], cfg["site"]
     base = f"https://{tenant}.{host}.myworkdayjobs.com"
     api = f"{base}/wday/cxs/{tenant}/{site}/jobs"
-    out, offset = [], 0
+    out, offset, total = [], 0, None
     while offset < 200:
         body = json.loads(
             http_post_json(api, {"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": cfg.get("search", "product manager")})
         )
         postings = body.get("jobPostings", [])
+        # Workday reports `total` only on the first page; every later page returns 0.
+        # Re-reading it each time made `offset >= total` true on page two, so this
+        # loop silently stopped after 40 postings for every Workday company.
+        if total is None:
+            total = body.get("total", 0)
         for j in postings:
             title = j.get("title", "")
             if title_matches(title):
@@ -253,7 +258,7 @@ def fetch_workday(cfg):
                     }
                 )
         offset += 20
-        if offset >= body.get("total", 0) or not postings:
+        if offset >= total or not postings:
             break
     return out
 
@@ -553,12 +558,30 @@ def cmd_scan(args):
         return key not in known and is_recent(p.get("posting_date", ""), ref)
 
     new_postings, seen_keys = [], set()
+    # Every matching role open right now, regardless of posting date. The "new"
+    # sections are age-filtered whenever state cannot persist, so without this
+    # list a role posted outside that window is invisible in every later digest.
+    open_postings = []
+
+    def note_open(name, p, source):
+        open_postings.append({
+            "company": name,
+            "role_title": p["role_title"],
+            "url": p.get("url", ""),
+            "posting_date": p.get("posting_date", ""),
+            "location": p.get("location", ""),
+            "tier": classify_title(p["role_title"]) or "apm",
+            "source": source,
+            "urgent": name in urgent_names,
+        })
+
     for name, postings in results.items():
         for p in postings:
             key = norm_key(name, p["role_title"])
             if key in seen_keys:
                 continue
             seen_keys.add(key)
+            note_open(name, p, "ats-api")
             if is_new(key, p):
                 entry = {"company": name, "source": "ats-api",
                          "tier": classify_title(p["role_title"]) or "apm", **p}
@@ -576,6 +599,7 @@ def cmd_scan(args):
             if key in seen_keys:
                 continue
             seen_keys.add(key)
+            note_open(name, p, p.get("source", "aggregator"))
             if is_new(key, p):
                 entry = {"company": name, **p}
                 if name in urgent_names:
@@ -594,6 +618,7 @@ def cmd_scan(args):
         "aggregator_companies_covered": sorted(agg_by_company.keys()),
         "other_apm_programs": agg_other[:15],
         "new_postings": new_postings,
+        "open_postings": open_postings,
         "urgent_new": [p for p in new_postings if p.get("urgent")],
         "seen_open": sorted(f"{k[0]}||{k[1]}" for k in seen_keys),
         # Only surface custom-ATS companies when their window is actually near — listing all 15
@@ -644,6 +669,7 @@ def cmd_scan(args):
             "fetch_errors": errors,
             "aggregator_error": agg_error,
             "new_postings": new_postings,
+            "open_postings_count": len(open_postings),
             "urgent_new": pending["urgent_new"],
             "applications_used": load_applications()[0]["used"],
             "other_apm_programs": pending["other_apm_programs"],
@@ -723,6 +749,70 @@ def cmd_apps(args):
                       "cap": APPLICATION_CAP, "entries": data.get("entries", [])}, indent=2))
 
 
+def board_total(cfg):
+    """Raw posting count on a board, before any title filtering.
+
+    Zero *matching* roles is normal. Zero *total* postings means the config points
+    at nothing — which is how Visa sat uncovered after migrating off SmartRecruiters:
+    the tenant still resolved, every posting was inactive, and the list API returned
+    an empty set with HTTP 200 on every run. Returns None when the ATS shape cannot
+    be counted this cheaply.
+    """
+    ty = cfg["type"]
+    if ty == "greenhouse":
+        body = json.loads(http_get(f"https://boards-api.greenhouse.io/v1/boards/{cfg['board']}/jobs?content=false"))
+        return len(body.get("jobs", []))
+    if ty == "lever":
+        return len(json.loads(http_get(f"https://api.lever.co/v0/postings/{cfg['board']}?mode=json")))
+    if ty == "ashby":
+        body = json.loads(http_get(f"https://api.ashbyhq.com/posting-api/job-board/{cfg['board']}?includeCompensation=false"))
+        return len(body.get("jobs", []))
+    if ty == "smartrecruiters":
+        body = json.loads(http_get(f"https://api.smartrecruiters.com/v1/companies/{cfg['company']}/postings?limit=1"))
+        return body.get("totalFound", 0)
+    if ty == "workday":
+        body = json.loads(http_post_json(
+            f"https://{cfg['tenant']}.{cfg['host']}.myworkdayjobs.com/wday/cxs/{cfg['tenant']}/{cfg['site']}/jobs",
+            {"appliedFacets": {}, "limit": 1, "offset": 0,
+             "searchText": cfg.get("search", "product manager")}))
+        return body.get("total", 0)
+    return None
+
+
+def cmd_audit(args):
+    """Verify every API-backed board still returns postings.
+
+    `scan` marks a company OK whenever the fetch succeeds, so a board that has gone
+    empty passes silently forever. Run this when coverage is in doubt.
+    """
+    companies = load_companies()
+    rows = []
+    with cf.ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(board_total, c["ats"]): c
+                   for c in companies if c["ats"]["type"] in FETCHERS}
+        for fut in cf.as_completed(futures):
+            c = futures[fut]
+            try:
+                rows.append({"company": c["name"], "ats": c["ats"]["type"], "total": fut.result()})
+            except Exception as e:
+                rows.append({"company": c["name"], "ats": c["ats"]["type"], "total": None,
+                             "error": f"{type(e).__name__}: {str(e)[:120]}"})
+
+    dead = sorted((r for r in rows if r.get("error") or r["total"] == 0),
+                  key=lambda r: r["company"])
+    counted = [r for r in rows if isinstance(r["total"], int)]
+    print(json.dumps({
+        "boards_checked": len(counted),
+        "healthy": sum(1 for r in counted if r["total"] > 0),
+        "dead_boards": dead,
+        "not_countable": sorted(r["company"] for r in rows
+                                if r["total"] is None and not r.get("error")),
+    }, indent=2))
+    if dead:
+        print(f"\n\u26a0\ufe0f  {len(dead)} board(s) return nothing. These pass `scan` as healthy "
+              f"but cover no roles — fix the ATS config in companies.json.")
+
+
 def cmd_finalize(args):
     pending = load_json(PENDING_FILE, None)
     if pending is None:
@@ -770,7 +860,15 @@ def cmd_finalize(args):
     # Digest
     title = "Initial Baseline" if baseline else ref.isoformat()
     lines = [f"# APM Tracker — {title}", ""]
-    if baseline:
+    # Distinct from the status JSON's "degraded", which is about fetch failures.
+    state_degraded = not pending.get("state_healthy", True)
+    if baseline and state_degraded:
+        lines += [
+            "_State did not carry over from a previous run, so the sections below are "
+            "age-limited. The complete picture is under **All currently open**._",
+            "",
+        ]
+    elif baseline:
         lines += [
             "_First run: every posting below seeds the baseline — these are currently-open matches, not necessarily opened today._",
             "",
@@ -829,16 +927,38 @@ def cmd_finalize(args):
             lines.append(f"- ~~{p['role_title']}~~ — {p['suppressed_reason']} — {p.get('url', '')}")
         lines.append("")
 
-    lines.append("## New postings today" if not baseline else "## Currently open matching postings (baseline)")
+    if state_degraded:
+        lines.append(f"## Newly posted (last {RECENT_DAYS} days)")
+    elif baseline:
+        lines.append("## Currently open matching postings (baseline)")
+    else:
+        lines.append("## New postings today")
     if tier1:
         lines += [fmt(p) for p in sorted(tier1, key=lambda x: x["company"])]
     else:
-        lines.append("- No new postings today.")
+        lines.append(f"- Nothing newly posted in the last {RECENT_DAYS} days."
+                     if state_degraded else "- No new postings today.")
     lines.append("")
 
     if tier2:
         lines.append("## Analyst roles — wider net (new-grad product/data analyst)")
         lines += [fmt(p) for p in sorted(tier2, key=lambda x: x["company"])]
+        lines.append("")
+
+    shown = {norm_key(p["company"], p["role_title"]) for p in news + suppressed}
+    standing = [p for p in pending.get("open_postings", [])
+                if norm_key(p["company"], p["role_title"]) not in shown]
+    if standing:
+        lines.append(f"## All currently open ({len(standing)})")
+        lines.append("_Every matching role the scan sees open right now, whenever it was posted. "
+                     "Repeats between runs by design — this is the safety net, not the signal._")
+        for p in sorted(standing, key=lambda x: (0 if x.get("urgent") else 1,
+                                                 0 if x.get("tier") == "apm" else 1,
+                                                 x["company"], x["role_title"])):
+            mark = "🚨 " if p.get("urgent") else ""
+            tier_bit = " _(analyst)_" if p.get("tier") == "analyst" else ""
+            date_bit = f" — posted {p['posting_date']}" if p.get("posting_date") else ""
+            lines.append(f"- {mark}**{p['company']}** — {p['role_title']}{tier_bit}{date_bit} — {p.get('url', '')}")
         lines.append("")
 
     other = pending.get("other_apm_programs", [])
@@ -992,6 +1112,7 @@ def main():
     p_rm = sub.add_parser("remove")
     p_rm.add_argument("--company", required=True)
     p_rm.add_argument("--title", required=True)
+    sub.add_parser("audit", help="check every API board still returns postings (catches dead ATS configs)")
     p_apps = sub.add_parser("apps", help="TikTok application counter (2 per period; resets Jan 1 / Jul 1)")
     p_apps.add_argument("--log", default="", help="record an application you submitted (role title)")
     p_apps.add_argument("--set", type=int, default=None, help="set the used count explicitly")
@@ -999,7 +1120,7 @@ def main():
     p_fin.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
     {"scan": cmd_scan, "add": cmd_add, "remove": cmd_remove,
-     "finalize": cmd_finalize, "apps": cmd_apps}[args.cmd](args)
+     "finalize": cmd_finalize, "apps": cmd_apps, "audit": cmd_audit}[args.cmd](args)
 
 
 if __name__ == "__main__":
